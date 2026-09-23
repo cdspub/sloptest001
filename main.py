@@ -8,7 +8,6 @@ from main_window import MainWindow
 
 
 def main() -> None:
-    """Run the widget tester application."""
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
