@@ -9,6 +9,7 @@ from main_window import MainWindow
 
 def main() -> None:
     app = QApplication(sys.argv)
+    # BOT: inject app into MainWindow
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

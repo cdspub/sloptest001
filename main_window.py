@@ -12,6 +12,8 @@ class MainWindow(Widget):
         self.setWindowTitle("PySide6 Widget Tester")
         self.setBackgroundColor(QColor(20, 20, 20))
         self._create_menu()
+        # BOT: after the app is injected here, use it to get the screen size
+        # and to resize the window to 80% of the screen size.
 
     def _create_menu(self) -> None:
         """Create a menu bar with a single ``New`` menu and ``Widget`` action.
