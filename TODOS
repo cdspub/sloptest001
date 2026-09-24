@@ -1,3 +1,3 @@
-- [x] Split the main window horizontally into two panes using the qsplitter.
-- [x] Add control widget to the left pane. Make sure the pane is scrollable if the control widget doesn't fit.
-- [x] Process control widget's "New" button push in a method that just prints something for now.
+- [ ] Left pane with control widget should be 20% of the window width by default.
+- [ ] Rename "Name" frame of the control widget to "Widget". Add `width` and `height` rows with inputs and up/down buttons to adjust the values. Set default values to 500.
+- [ ] Add `Escape` hotkey to the main window that closes it and exists the app.

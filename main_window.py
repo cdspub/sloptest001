@@ -15,7 +15,7 @@ class MainWindow(Widget):
     def __init__(self, app: QApplication, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._app = app
-        self.setWindowTitle("PySide6 Widget Tester")
+        self.setWindowTitle("Widget Tester")
         self.setBackgroundColor(QColor(20, 20, 20))
         layout = QVBoxLayout(self)
         layout.addWidget(self._create_splitter())
