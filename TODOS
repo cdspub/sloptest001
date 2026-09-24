@@ -1,0 +1,4 @@
+- [ ] Remove main window menu bar and clean up all associated code.
+- [ ] Create new `control_widget.py` with `ControlWidget(Widget)` class.
+- [ ] Make `ControlWidget` have a "New" button on top and a labeled frame below it that contains "Name: [name_line_input]".
+
