@@ -53,7 +53,8 @@ class ControlWidget(Widget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
 
-        self.new_button = QPushButton("New", self)
+        self.add_button = QPushButton("Add", self)
+        self.remove_button = QPushButton("Remove", self)
         self.name_line_input = QLineEdit(self)
         self.width_spin_input = QSpinBox(self)
         self.width_spin_input.setRange(1, 100000)
@@ -71,7 +72,8 @@ class ControlWidget(Widget):
         form_layout.addRow("Background color:", self.background_color_input)
 
         layout = QVBoxLayout(self)
-        layout.addWidget(self.new_button)
+        layout.addWidget(self.add_button)
+        layout.addWidget(self.remove_button)
         layout.addWidget(labeled_frame)
         layout.addStretch()
 

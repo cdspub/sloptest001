@@ -1,4 +1,7 @@
-- [x] Add "Background color" input to the control widget with a color picker.
-- [x] When the New button is clicked, create a new empty widget inherited from `Widget`. Set its size to the exact size specified in the control widget. Place the new widget at the center of the right pane.
-- [x] When the size is changed in the control widget and the widget is present on the right pane, dynamically adjust its size to match.
-- [x] Apply all changes in the control widget dynamically in general.
+- [ ] Add new control inputs to the `Widget` control frame:
+    - [ ] "border width"
+    - [ ] "border style"
+    - [ ] "border color"
+    - [ ] "corner radius"
+- [ ] Make sure all new controls are handled dynamically as usual.
+- [ ] Add "Background fill pattern" control. Make sure its picker widget reflects the chosen style.

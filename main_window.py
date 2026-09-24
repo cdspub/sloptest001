@@ -27,7 +27,10 @@ class MainWindow(Widget):
     def _create_splitter(self) -> QSplitter:
         splitter = QSplitter(Qt.Orientation.Horizontal, self)
         self.control_widget = ControlWidget()
-        self.control_widget.new_button.clicked.connect(self._on_new_button_clicked)
+        self.control_widget.add_button.clicked.connect(
+            self._on_add_button_clicked)
+        self.control_widget.remove_button.clicked.connect(
+            self._on_remove_button_clicked)
         self.control_widget.sizeChanged.connect(self._on_size_changed)
         self.control_widget.backgroundColorChanged.connect(
             self._on_background_color_changed
@@ -50,9 +53,10 @@ class MainWindow(Widget):
         self.close()
         self._app.quit()
 
-    def _on_new_button_clicked(self) -> None:
-        print("New button clicked")
-        self._remove_current_widget()
+    def _on_add_button_clicked(self) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            return
         widget = Widget()
         widget.setObjectName(self.control_widget.name_line_input.text())
         widget.resize(
@@ -62,6 +66,9 @@ class MainWindow(Widget):
         widget.setBackgroundColor(self.control_widget.current_background_color())
         self._widget_on_pane = widget
         self._place_widget_center()
+
+    def _on_remove_button_clicked(self) -> None:
+        self._remove_current_widget()
 
     def _on_size_changed(self, width: int, height: int) -> None:
         widget = self._widget_on_pane
