@@ -32,6 +32,9 @@ class MainWindow(Widget):
         self.control_widget.remove_button.clicked.connect(
             self._on_remove_button_clicked)
         self.control_widget.sizeChanged.connect(self._on_size_changed)
+        self.control_widget.baseBackgroundColorChanged.connect(
+            self._on_base_background_color_changed
+        )
         self.control_widget.backgroundColorChanged.connect(
             self._on_background_color_changed
         )
@@ -44,7 +47,7 @@ class MainWindow(Widget):
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.control_widget)
-        self.right_pane = QWidget()
+        self.right_pane = Widget()
         right_layout = QVBoxLayout(self.right_pane)
         right_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         splitter.addWidget(scroll_area)
@@ -86,6 +89,9 @@ class MainWindow(Widget):
             return
         widget.resize(width, height)
         self._place_widget_center()
+
+    def _on_base_background_color_changed(self, color: QColor) -> None:
+        self.right_pane.setBackgroundColor(color)
 
     def _on_background_color_changed(self, color: QColor) -> None:
         widget = self._widget_on_pane
@@ -154,4 +160,4 @@ class MainWindow(Widget):
         y = frame.y() + (frame.height() - self.height()) // 2
         self.move(x, y)
         total_width = self.width()
-        self._splitter.setSizes([int(total_width * 0.2), int(total_width * 0.8)])
+        self._splitter.setSizes([int(total_width * 0.25), int(total_width * 0.75)])

@@ -1,7 +1,8 @@
-- [x] Add new control inputs to the `Widget` control frame:
-    - [x] "border width"
-    - [x] "border style"
-    - [x] "border color"
-    - [x] "corner radius"
-- [x] Make sure all new controls are handled dynamically as usual.
-- [x] Add "Background fill pattern" control. Make sure its picker widget reflects the chosen style.
+- [ ] Add shortcuts:
+    - [ ] Ctrl-o for open button
+    - [ ] ctrl-a for add button
+    - [ ] ctrl-r for remove button
+- [ ] Clicking on open button should show a file dialog showing app's cwd.
+- [ ] open file dialog allows opening a `.py` file.
+    - [ ] This file should be dynamically imported.
+    - [ ] This file is assumed to contain `W(Widget)` class which should be instantiated as the widget on the right pane.

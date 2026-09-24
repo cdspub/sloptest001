@@ -103,6 +103,7 @@ class PatternButton(QPushButton):
 class ControlWidget(Widget):
     widgetRenamed = Signal(str)
     sizeChanged = Signal(int, int)
+    baseBackgroundColorChanged = Signal(QColor)
     backgroundColorChanged = Signal(QColor)
     borderWidthChanged = Signal(int)
     borderStyleChanged = Signal(str)
@@ -113,6 +114,7 @@ class ControlWidget(Widget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
 
+        self.open_button = QPushButton("Open", self)
         self.add_button = QPushButton("Add", self)
         self.remove_button = QPushButton("Remove", self)
         self.name_line_input = QLineEdit(self)
@@ -122,6 +124,7 @@ class ControlWidget(Widget):
         self.height_spin_input = QSpinBox(self)
         self.height_spin_input.setRange(1, 100000)
         self.height_spin_input.setValue(500)
+        self.base_background_color_input = ColorButton(QColor("#000000"), self)
         self.background_color_input = ColorButton(QColor("#808080"), self)
         self.border_width_spin_input = QSpinBox(self)
         self.border_width_spin_input.setRange(0, 100)
@@ -132,23 +135,33 @@ class ControlWidget(Widget):
         self.corner_radius_spin_input.setRange(0, 1000)
         self.fill_pattern_input = PatternButton("Solid", QColor("#808080"), self)
 
-        labeled_frame = QGroupBox("Widget", self)
-        form_layout = QFormLayout(labeled_frame)
-        form_layout.addRow("Name:", self.name_line_input)
-        form_layout.addRow("Width:", self.width_spin_input)
-        form_layout.addRow("Height:", self.height_spin_input)
-        form_layout.addRow("Background color:", self.background_color_input)
-        form_layout.addRow("Background fill pattern:", self.fill_pattern_input)
-        form_layout.addRow("Border width:", self.border_width_spin_input)
-        form_layout.addRow("Border style:", self.border_style_combo_input)
-        form_layout.addRow("Border color:", self.border_color_input)
-        form_layout.addRow("Corner radius:", self.corner_radius_spin_input)
+        base_frame = QGroupBox("Base", self)
+        base_form_layout = QFormLayout(base_frame)
+        base_form_layout.addRow(
+            "Background color:", self.base_background_color_input)
+
+        widget_frame = QGroupBox("Widget", self)
+        widget_form_layout = QFormLayout(widget_frame)
+        widget_form_layout.addRow("Name:", self.name_line_input)
+        widget_form_layout.addRow("Width:", self.width_spin_input)
+        widget_form_layout.addRow("Height:", self.height_spin_input)
+        widget_form_layout.addRow("Background color:", self.background_color_input)
+        widget_form_layout.addRow("Background fill pattern:", self.fill_pattern_input)
+        widget_form_layout.addRow("Border width:", self.border_width_spin_input)
+        widget_form_layout.addRow("Border style:", self.border_style_combo_input)
+        widget_form_layout.addRow("Border color:", self.border_color_input)
+        widget_form_layout.addRow("Corner radius:", self.corner_radius_spin_input)
 
         layout = QVBoxLayout(self)
+        layout.addWidget(self.open_button)
         layout.addWidget(self.add_button)
         layout.addWidget(self.remove_button)
-        layout.addWidget(labeled_frame)
+        layout.addWidget(base_frame)
+        layout.addWidget(widget_frame)
         layout.addStretch()
+
+        self.base_background_color_input.colorChanged.connect(
+            self._on_base_bg_color_changed)
 
         self.name_line_input.textChanged.connect(self._on_name_changed)
         self.width_spin_input.valueChanged.connect(self._emit_size_changed)
@@ -199,3 +212,6 @@ class ControlWidget(Widget):
     def _on_bg_color_changed(self, color: QColor) -> None:
         self.fill_pattern_input.setColor(color)
         self.backgroundColorChanged.emit(color)
+
+    def _on_base_bg_color_changed(self, color: QColor) -> None:
+        self.baseBackgroundColorChanged.emit(color)
