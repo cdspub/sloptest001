@@ -15,6 +15,7 @@ class MainWindow(Widget):
     def __init__(self, app: QApplication, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._app = app
+        self._widget_on_pane: Widget | None = None
         self.setWindowTitle("Widget Tester")
         self.setBackgroundColor(QColor(20, 20, 20))
         layout = QVBoxLayout(self)
@@ -27,13 +28,19 @@ class MainWindow(Widget):
         splitter = QSplitter(Qt.Orientation.Horizontal, self)
         self.control_widget = ControlWidget()
         self.control_widget.new_button.clicked.connect(self._on_new_button_clicked)
+        self.control_widget.sizeChanged.connect(self._on_size_changed)
+        self.control_widget.backgroundColorChanged.connect(
+            self._on_background_color_changed
+        )
+        self.control_widget.widgetRenamed.connect(self._on_widget_renamed)
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.control_widget)
-        right_pane = QWidget()
-        QVBoxLayout(right_pane)
+        self.right_pane = QWidget()
+        right_layout = QVBoxLayout(self.right_pane)
+        right_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         splitter.addWidget(scroll_area)
-        splitter.addWidget(right_pane)
+        splitter.addWidget(self.right_pane)
         self._splitter = splitter
         total_width = self.width() if self.width() > 0 else 800
         splitter.setSizes([int(total_width * 0.2), int(total_width * 0.8)])
@@ -45,6 +52,54 @@ class MainWindow(Widget):
 
     def _on_new_button_clicked(self) -> None:
         print("New button clicked")
+        self._remove_current_widget()
+        widget = Widget()
+        widget.setObjectName(self.control_widget.name_line_input.text())
+        widget.resize(
+            self.control_widget.current_width(),
+            self.control_widget.current_height(),
+        )
+        widget.setBackgroundColor(self.control_widget.current_background_color())
+        self._widget_on_pane = widget
+        self._place_widget_center()
+
+    def _on_size_changed(self, width: int, height: int) -> None:
+        widget = self._widget_on_pane
+        if widget is None:
+            return
+        widget.resize(width, height)
+        self._place_widget_center()
+
+    def _on_background_color_changed(self, color: QColor) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            widget.setBackgroundColor(color)
+
+    def _on_widget_renamed(self, name: str) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            widget.setObjectName(name)
+
+    def _remove_current_widget(self) -> None:
+        if self._widget_on_pane is not None:
+            self._widget_on_pane.setParent(None)
+            self._widget_on_pane.deleteLater()
+            self._widget_on_pane = None
+
+    def _place_widget_center(self) -> None:
+        widget = self._widget_on_pane
+        if widget is None:
+            return
+        widget.setParent(self.right_pane)
+        pane_size = self.right_pane.size()
+        x = max(0, (pane_size.width() - widget.width()) // 2)
+        y = max(0, (pane_size.height() - widget.height()) // 2)
+        widget.move(x, y)
+        widget.show()
+
+    def resizeEvent(self, event) -> None:
+        super().resizeEvent(event)
+        self._place_widget_center()
 
     def _resize_to_screen(self) -> None:
         screen = self._app.primaryScreen()
