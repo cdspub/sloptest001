@@ -113,6 +113,8 @@ class MainWindow(Widget):
             self.control_widget.current_width(),
             self.control_widget.current_height(),
         )
+        color = self.control_widget.background_color_input.color()
+        widget.setBackgroundColor(color)
         self._widget_on_pane = widget
         self._place_widget_center()
 
