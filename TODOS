@@ -1,7 +1,7 @@
-- [ ] Add new control inputs to the `Widget` control frame:
-    - [ ] "border width"
-    - [ ] "border style"
-    - [ ] "border color"
-    - [ ] "corner radius"
-- [ ] Make sure all new controls are handled dynamically as usual.
-- [ ] Add "Background fill pattern" control. Make sure its picker widget reflects the chosen style.
+- [x] Add new control inputs to the `Widget` control frame:
+    - [x] "border width"
+    - [x] "border style"
+    - [x] "border color"
+    - [x] "corner radius"
+- [x] Make sure all new controls are handled dynamically as usual.
+- [x] Add "Background fill pattern" control. Make sure its picker widget reflects the chosen style.
