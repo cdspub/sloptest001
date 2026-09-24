@@ -1,4 +1,3 @@
-- [x] Remove main window menu bar and clean up all associated code.
-- [x] Create new `control_widget.py` with `ControlWidget(Widget)` class.
-- [x] Make `ControlWidget` have a "New" button on top and a labeled frame below it that contains "Name: [name_line_input]".
-
+- [ ] Split the main window horizontally into two panes using the qsplitter.
+- [ ] Add control widget to the left pane. Make sure the pane is scrollable if the control widget doesn't fit.
+- [ ] Process control widget's "New" button push in a method that just prints something for now.
