@@ -36,6 +36,11 @@ class MainWindow(Widget):
             self._on_background_color_changed
         )
         self.control_widget.widgetRenamed.connect(self._on_widget_renamed)
+        self.control_widget.borderWidthChanged.connect(self._on_border_width_changed)
+        self.control_widget.borderStyleChanged.connect(self._on_border_style_changed)
+        self.control_widget.borderColorChanged.connect(self._on_border_color_changed)
+        self.control_widget.cornerRadiusChanged.connect(self._on_corner_radius_changed)
+        self.control_widget.fillPatternChanged.connect(self._on_fill_pattern_changed)
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.control_widget)
@@ -64,6 +69,11 @@ class MainWindow(Widget):
             self.control_widget.current_height(),
         )
         widget.setBackgroundColor(self.control_widget.current_background_color())
+        widget.setBackgroundFillPattern(self.control_widget.current_fill_pattern())
+        widget.setBorderWidth(self.control_widget.current_border_width())
+        widget.setBorderStyle(self.control_widget.current_border_style())
+        widget.setBorderColor(self.control_widget.current_border_color())
+        widget.setCornerRadius(self.control_widget.current_corner_radius())
         self._widget_on_pane = widget
         self._place_widget_center()
 
@@ -86,6 +96,31 @@ class MainWindow(Widget):
         widget = self._widget_on_pane
         if widget is not None:
             widget.setObjectName(name)
+
+    def _on_border_width_changed(self, width: int) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            widget.setBorderWidth(width)
+
+    def _on_border_style_changed(self, style_name: str) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            widget.setBorderStyle(style_name)
+
+    def _on_border_color_changed(self, color: QColor) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            widget.setBorderColor(color)
+
+    def _on_corner_radius_changed(self, radius: int) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            widget.setCornerRadius(radius)
+
+    def _on_fill_pattern_changed(self, pattern_name: str) -> None:
+        widget = self._widget_on_pane
+        if widget is not None:
+            widget.setBackgroundFillPattern(pattern_name)
 
     def _remove_current_widget(self) -> None:
         if self._widget_on_pane is not None:
