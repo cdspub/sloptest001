@@ -1,3 +1,4 @@
-- [x] Left pane with control widget should be 20% of the window width by default.
-- [x] Rename "Name" frame of the control widget to "Widget". Add `width` and `height` rows with inputs and up/down buttons to adjust the values. Set default values to 500.
-- [x] Add `Escape` hotkey to the main window that closes it and exists the app.
+- [ ] Add "Background color" input to the control widget with a color picker.
+- [ ] When the New button is clicked, create a new empty widget inherited from `Widget`. Set its size to the exact size specified in the control widget. Place the new widget at the center of the right pane.
+- [ ] When the size is changed in the control widget and the widget is present on the right pane, dynamically adjust its size to match.
+- [ ] Apply all changes in the control widget dynamically in general.
