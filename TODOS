@@ -1,8 +1,4 @@
-- [x] Add shortcuts:
-    - [x] Ctrl-o for open button
-    - [x] ctrl-a for add button
-    - [x] ctrl-r for remove button
-- [x] Clicking on open button should show a file dialog showing app's cwd.
-- [x] open file dialog allows opening a `.py` file.
-    - [x] This file should be dynamically imported.
-    - [x] This file is assumed to contain `W(Widget)` class which should be instantiated as the widget on the right pane.
+- [ ] The app should now start with maximized window.
+- [ ] Add another pane on the right side of the window with splitter.
+- [ ] Add a basic log widget (plain text edit) to the new pane.
+- [ ] The widget being loaded through `Open` button can now have any name - as long as it is derived from `Widget` and is a single widget within the file being opened.
