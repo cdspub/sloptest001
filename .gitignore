@@ -1,2 +1,6 @@
-__pycache__**
-**.pyc
+# Compiled and build artifacts
+__pycache__/
+*.pyc
+
+# Logs and temp files
+*.log
