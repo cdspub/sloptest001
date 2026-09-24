@@ -1,6 +1,3 @@
-"""MainWindow module for the PySide6 widget tester app."""
-
-
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QMenuBar, QMenu, QVBoxLayout, QWidget
 from widget import Widget
@@ -16,7 +13,6 @@ class MainWindow(Widget):
         self._resize_to_screen()
 
     def _resize_to_screen(self) -> None:
-        """Resize the window to 80% of the primary screen's available size."""
         screen = self._app.primaryScreen()
         if screen is None:
             return
@@ -28,11 +24,6 @@ class MainWindow(Widget):
         self.move(x, y)
 
     def _create_menu(self) -> None:
-        """Create a menu bar with a single ``New`` menu and ``Widget`` action.
-
-        ``Widget`` is not a ``QMainWindow``, so the menu bar is added to the
-        widget's own layout instead of using ``QMainWindow.menuBar()``.
-        """
         menu_bar = QMenuBar(self)
         new_menu: QMenu = menu_bar.addMenu("New")
         new_widget_action = new_menu.addAction("Widget")
@@ -44,5 +35,4 @@ class MainWindow(Widget):
         layout.addStretch()
 
     def _on_new_widget(self) -> None:
-        """Handle the ``New -> Widget`` action (stub)."""
         print("New Widget action triggered")
