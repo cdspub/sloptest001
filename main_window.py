@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QApplication,
     QScrollArea,
@@ -19,6 +19,8 @@ class MainWindow(Widget):
         self.setBackgroundColor(QColor(20, 20, 20))
         layout = QVBoxLayout(self)
         layout.addWidget(self._create_splitter())
+        shortcut = QShortcut(QKeySequence(Qt.Key.Key_Escape), self)
+        shortcut.activated.connect(self._on_escape)
         self._resize_to_screen()
 
     def _create_splitter(self) -> QSplitter:
@@ -32,8 +34,14 @@ class MainWindow(Widget):
         QVBoxLayout(right_pane)
         splitter.addWidget(scroll_area)
         splitter.addWidget(right_pane)
-        splitter.setSizes([300, 500])
+        self._splitter = splitter
+        total_width = self.width() if self.width() > 0 else 800
+        splitter.setSizes([int(total_width * 0.2), int(total_width * 0.8)])
         return splitter
+
+    def _on_escape(self) -> None:
+        self.close()
+        self._app.quit()
 
     def _on_new_button_clicked(self) -> None:
         print("New button clicked")
@@ -48,3 +56,5 @@ class MainWindow(Widget):
         x = frame.x() + (frame.width() - self.width()) // 2
         y = frame.y() + (frame.height() - self.height()) // 2
         self.move(x, y)
+        total_width = self.width()
+        self._splitter.setSizes([int(total_width * 0.2), int(total_width * 0.8)])
