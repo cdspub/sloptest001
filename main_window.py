@@ -7,6 +7,9 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+import importlib.util
+import inspect
+
 from control_widget import ControlWidget
 from widget import Widget
 
@@ -31,6 +34,7 @@ class MainWindow(Widget):
             self._on_add_button_clicked)
         self.control_widget.remove_button.clicked.connect(
             self._on_remove_button_clicked)
+        self.control_widget.fileOpened.connect(self._on_file_opened)
         self.control_widget.sizeChanged.connect(self._on_size_changed)
         self.control_widget.baseBackgroundColorChanged.connect(
             self._on_base_background_color_changed
@@ -82,6 +86,35 @@ class MainWindow(Widget):
 
     def _on_remove_button_clicked(self) -> None:
         self._remove_current_widget()
+
+    def _on_file_opened(self, path: str) -> None:
+        spec = importlib.util.spec_from_file_location("opened_widget_module", path)
+        if spec is None or spec.loader is None:
+            print(f"Failed to load module from {path}")
+            return
+        module = importlib.util.module_from_spec(spec)
+        try:
+            spec.loader.exec_module(module)
+        except Exception as error:
+            print(f"Error importing {path}: {error}")
+            return
+        widget_class = getattr(module, "W", None)
+        if (
+            widget_class is None
+            or not inspect.isclass(widget_class)
+            or not issubclass(widget_class, Widget)
+        ):
+            print(f"{path} must define a W(Widget) class")
+            return
+        self._remove_current_widget()
+        widget = widget_class()
+        widget.setObjectName(self.control_widget.name_line_input.text())
+        widget.resize(
+            self.control_widget.current_width(),
+            self.control_widget.current_height(),
+        )
+        self._widget_on_pane = widget
+        self._place_widget_center()
 
     def _on_size_changed(self, width: int, height: int) -> None:
         widget = self._widget_on_pane

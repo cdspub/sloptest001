@@ -1,8 +1,9 @@
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QBrush, QColor, QIcon, QPainter, QPixmap
+from PySide6.QtGui import QBrush, QColor, QIcon, QPainter, QPixmap, QKeySequence
 from PySide6.QtWidgets import (
     QColorDialog,
     QComboBox,
+    QFileDialog,
     QFormLayout,
     QGroupBox,
     QPushButton,
@@ -11,6 +12,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+import os
 
 from widget import _BORDER_STYLES, _FILL_PATTERNS, Widget
 
@@ -110,6 +112,7 @@ class ControlWidget(Widget):
     borderColorChanged = Signal(QColor)
     cornerRadiusChanged = Signal(int)
     fillPatternChanged = Signal(str)
+    fileOpened = Signal(str)
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -117,6 +120,9 @@ class ControlWidget(Widget):
         self.open_button = QPushButton("Open", self)
         self.add_button = QPushButton("Add", self)
         self.remove_button = QPushButton("Remove", self)
+        self.open_button.setShortcut(QKeySequence("Ctrl+O"))
+        self.add_button.setShortcut(QKeySequence("Ctrl+A"))
+        self.remove_button.setShortcut(QKeySequence("Ctrl+R"))
         self.name_line_input = QLineEdit(self)
         self.width_spin_input = QSpinBox(self)
         self.width_spin_input.setRange(1, 100000)
@@ -178,6 +184,7 @@ class ControlWidget(Widget):
             self.cornerRadiusChanged.emit
         )
         self.fill_pattern_input.patternChanged.connect(self.fillPatternChanged.emit)
+        self.open_button.clicked.connect(self._on_open_clicked)
 
     def current_width(self) -> int:
         return self.width_spin_input.value()
@@ -215,3 +222,9 @@ class ControlWidget(Widget):
 
     def _on_base_bg_color_changed(self, color: QColor) -> None:
         self.baseBackgroundColorChanged.emit(color)
+
+    def _on_open_clicked(self) -> None:
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Open Python File", os.getcwd(), "Python Files (*.py)")
+        if path:
+            self.fileOpened.emit(path)

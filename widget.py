@@ -39,6 +39,7 @@ _FILL_PATTERNS = {
 class Widget(QWidget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
+        self.setAutoFillBackground(True)
         self._border_width = 0
         self._border_style_name = "None"
         self._border_color = QColor("black")
